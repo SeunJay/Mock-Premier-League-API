@@ -1,0 +1,36 @@
+{
+  "name": "mock-premier-league-api",
+  "version": "1.0.0",
+  "description": "An API that serves the latest scores of fixtures of matches in a “Mock Premier League”",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SeunJay/Mock-Premier-League-API.git"
+  },
+  "author": "Seun Jay",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SeunJay/Mock-Premier-League-API/issues"
+  },
+  "homepage": "https://github.com/SeunJay/Mock-Premier-League-API#readme",
+  "dependencies": {
+    "@hapi/joi": "^16.0.1",
+    "bcrypt": "^3.0.6",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.1",
+    "morgan": "^1.9.1",
+    "redis": "^2.8.0"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.2",
+    "supertest": "^4.0.2"
+  }
+}
