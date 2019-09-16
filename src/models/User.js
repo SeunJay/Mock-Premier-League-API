@@ -4,18 +4,21 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, "Please tell us your name!"]
+      required: [true, "Please tell us your name!"],
+      trim: true
     },
     email: {
       type: String,
       required: [true, "Please provide your email"],
       unique: true,
-      lowercase: true
+      lowercase: true,
+      trim: true
     },
     password: {
       type: String,
       minlength: 8,
-      required: [true, "Please provide a password"]
+      required: [true, "Please provide a password"],
+      trim: true
     },
     role: {
       type: String,
