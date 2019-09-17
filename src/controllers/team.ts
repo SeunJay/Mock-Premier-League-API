@@ -51,10 +51,27 @@ export const addTeam = async (req: Request, res: Response) => {
 export const editTeam = async (req: Request, res: Response) => {
   try {
     const updatedTeam = await Team.findByIdAndUpdate(
-      { id: req.params.id },
+      { _id: req.params.id },
       req.body,
     );
     return res.status(200).json({ success: true, data: updatedTeam });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const removeTeam = async (req: Request, res: Response) => {
+  try {
+    const removedTeam = await Team.findById({ _id: req.params.id });
+    if (!removedTeam)
+      return res.status(400).json({ success: true, message: 'No such team' });
+
+    removedTeam.isDeleted = false;
+    await removedTeam.save();
+    return res.status(200).json({
+      success: true,
+      message: `${removedTeam.name} has been successfully removed`,
+    });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
