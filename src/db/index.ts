@@ -5,7 +5,6 @@ import { User } from '../models/User';
 import { Team } from '../models/Team';
 import { Fixture } from '../models/Fixture';
 import bcrypt from 'bcrypt';
-import { promises } from 'fs';
 
 const cleanDb = async () => {
   try {
@@ -56,7 +55,9 @@ const seedFixture = async () => {
       const awayteam = await Team.findOne({ name: fixture.awayTeam }).exec();
       const newFixtures = await new Fixture({
         ...fixture,
+        //@ts-ignore
         homeTeam: hometeam.id,
+        //@ts-ignore
         awayTeam: awayteam.id,
       });
       await newFixtures.save();
