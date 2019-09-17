@@ -3,11 +3,14 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
 
 import indexRouter from './routes/index';
 import usersRouter from './routes/users';
+
+dotenv.config();
 
 const app = express();
 
@@ -44,9 +47,12 @@ app.use(function(
   res.render('error');
 });
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
-});
+console.log(process.env.JWT_PRIVATE_KEY);
+console.log(process.env.PORT);
+
+// const port = process.env.PORT || 3000;
+// app.listen(port, () => {
+//   console.log(`App running on port ${port}...`);
+// });
 
 module.exports = app;
