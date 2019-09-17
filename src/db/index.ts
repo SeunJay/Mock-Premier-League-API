@@ -49,38 +49,38 @@ const seedTeam = async () => {
   }
 };
 
-// const seedFixture = async () => {
-//   try {
-//     const allfixtures = fixtures.map(async fixture => {
-//       const hometeam = await Team.findOne({ name: fixture.homeTeam }).exec();
-//       const awayteam = await Team.findOne({ name: fixture.awayTeam }).exec();
-//       const newFixtures = await new Fixture({
-//         ...fixture,
-//         homeTeam: hometeam.id,
-//         awayTeam: awayteam.id,
-//       });
-//       await newFixtures.save();
-//     });
-//     const res = await Promise.all(allfixtures);
-//     return res;
-//   } catch (error) {
-//     console.log('Error :', error);
-//     return error;
-//   }
-// };
+const seedFixture = async () => {
+  try {
+    const allfixtures = fixtures.map(async fixture => {
+      const hometeam = await Team.findOne({ name: fixture.homeTeam }).exec();
+      const awayteam = await Team.findOne({ name: fixture.awayTeam }).exec();
+      const newFixtures = await new Fixture({
+        ...fixture,
+        homeTeam: hometeam.id,
+        awayTeam: awayteam.id,
+      });
+      await newFixtures.save();
+    });
+    const res = await Promise.all(allfixtures);
+    return res;
+  } catch (error) {
+    console.log('Error :', error);
+    return error;
+  }
+};
 
-// const seed = async () => {
-//   return await cleanDb()
-//     .then(async () => {
-//       await seedTeam();
-//       await seedUser();
-//       await seedFixture();
-//     })
-//     .then(() => console.log(`Database has been successfully seeded`))
-//     .catch(error => {
-//       console.log('Error :', error);
-//       return error;
-//     });
-// };
+const seed = async () => {
+  return await cleanDb()
+    .then(async () => {
+      await seedTeam();
+      await seedUser();
+      await seedFixture();
+    })
+    .then(() => console.log(`Database has been successfully seeded`))
+    .catch(error => {
+      console.log('Error :', error);
+      return error;
+    });
+};
 
-// export default seed;
+export default seed;
