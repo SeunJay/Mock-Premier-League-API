@@ -19,21 +19,21 @@ const cleanDb = async () => {
   }
 };
 
-// const seedUser = async () => {
-//   try {
-//     const Users = await users.map(async user => {
-//       const salt = await bcrypt.genSalt(10);
-//       user.password = await bcrypt.hash(user.password, salt);
-//       const newUser = await User.create(user);
-//       return newUser.save();
-//     });
-//     const res = await Promise.all(Users);
-//     return res;
-//   } catch (error) {
-//     console.log('Error :', error);
-//     return error;
-//   }
-// };
+const seedUser = async () => {
+  try {
+    const Users = await users.map(async user => {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+      const newUser = await User.create(user);
+      return newUser.save();
+    });
+    const res = await Promise.all(Users);
+    return res;
+  } catch (error) {
+    console.log('Error :', error);
+    return error;
+  }
+};
 
 // const seedTeam = async () => {
 //   try {
