@@ -1,0 +1,4 @@
+{
+  "process.env.JWT_PRIVATE_KEY": "mySpecialSecretPrivateKey",
+  "process.env.PORT": 3000
+}
