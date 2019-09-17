@@ -11,7 +11,7 @@ export const viewTeam = async (_req: Request, res: Response) => {
   }
 };
 
-export const createTeam = async (req: Request, res: Response) => {
+export const addTeam = async (req: Request, res: Response) => {
   const { error } = validateTeam(req.body);
   if (error) return res.status(401).send({ error: error.details[0].message });
 
@@ -43,6 +43,18 @@ export const createTeam = async (req: Request, res: Response) => {
       stadium_capacity,
     }).save();
     return res.status(200).json({ success: true, data: newTeam });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const editTeam = async (req: Request, res: Response) => {
+  try {
+    const updatedTeam = await Team.findByIdAndUpdate(
+      { id: req.params.id },
+      req.body,
+    );
+    return res.status(200).json({ success: true, data: updatedTeam });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
