@@ -1,4 +1,5 @@
 import Joi from 'joi';
+//@ts-ignore
 import JoiObjectId from 'joi-objectid';
 const myJoiObjectId = JoiObjectId(Joi);
 
