@@ -35,19 +35,19 @@ const seedUser = async () => {
   }
 };
 
-// const seedTeam = async () => {
-//   try {
-//     const Teams = await teams.map(async team => {
-//       const newTeam = await Team.create(team);
-//       return newTeam.save();
-//     });
-//     const res = await Promise.all(Teams);
-//     return res;
-//   } catch (error) {
-//     console.log('Error :', error);
-//     return error;
-//   }
-// };
+const seedTeam = async () => {
+  try {
+    const Teams = await teams.map(async team => {
+      const newTeam = await Team.create(team);
+      return newTeam.save();
+    });
+    const res = await Promise.all(Teams);
+    return res;
+  } catch (error) {
+    console.log('Error :', error);
+    return error;
+  }
+};
 
 // const seedFixture = async () => {
 //   try {
