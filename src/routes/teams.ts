@@ -8,4 +8,5 @@ const router = Router();
 router
   .get('/', auth, viewTeams)
   .post('/', [auth, admin], addTeam)
-  .put('/:id', [auth, admin], editTeam);
+  .put('/:id', [auth, admin], editTeam)
+  .delete('/:id', removeTeam);
