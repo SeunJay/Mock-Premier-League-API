@@ -14,16 +14,14 @@ export const signup = async (req: Request, res: Response) => {
     if (user)
       return res
         .status(400)
-        .send({ data: { message: 'User already exists!' } });
+        .json({ success: false, message: 'User already exists!' });
 
     user = await new User(req.body);
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
     const token = user.getToken();
-    res.status(200).send({
-      data: token,
-    });
+    return res.status(200).json({ success: true, data: token });
   } catch (error) {
     const { message } = error;
     return res.status(400).send({
