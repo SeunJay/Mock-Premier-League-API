@@ -67,9 +67,9 @@ export const removeTeam = async (req: Request, res: Response) => {
   try {
     const removedTeam = await Team.findById({ _id: req.params.id });
     if (!removedTeam)
-      return res.status(400).json({ success: true, message: 'No such team' });
+      return res.status(400).json({ success: false, message: 'No such team' });
 
-    removedTeam.isDeleted = false;
+    removedTeam.isDeleted = true;
     await removedTeam.save();
     return res.status(200).json({
       success: true,
