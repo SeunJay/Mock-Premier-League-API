@@ -14,5 +14,6 @@ const router = Router();
 
 router.get('/', auth, viewFixtures);
 router.get('/pending', auth, viewPendingFixtures);
+router.get('/completed', auth, viewCompletedFixtures);
 
 export default router;
