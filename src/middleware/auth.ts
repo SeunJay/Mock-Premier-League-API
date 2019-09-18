@@ -32,7 +32,8 @@ async function auth(req: Request, res: Response, next: NextFunction) {
       });
     }
 
-    req.body.user = currentUser;
+    //@ts-ignore
+    req['user'] = currentUser;
     next();
   } catch (error) {
     return res.status(400).send({ data: { error } });
