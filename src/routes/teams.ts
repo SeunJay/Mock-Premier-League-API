@@ -5,4 +5,4 @@ import { viewTeams, addTeam, editTeam, removeTeam } from '../controllers/team';
 
 const router = Router();
 
-router.get('/', auth, viewTeams);
+router.get('/', auth, viewTeams).post('/', [auth, admin], addTeam);
