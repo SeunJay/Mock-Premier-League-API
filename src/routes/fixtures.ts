@@ -13,5 +13,6 @@ import {
 const router = Router();
 
 router.get('/', auth, viewFixtures);
+router.get('/pending', auth, viewPendingFixtures);
 
 export default router;
