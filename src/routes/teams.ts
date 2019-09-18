@@ -9,6 +9,6 @@ router
   .get('/', auth, viewTeams)
   .post('/', [auth, admin], addTeam)
   .put('/:id', [auth, admin], editTeam)
-  .delete('/:id', removeTeam);
+  .delete('/:id', [auth, admin], removeTeam);
 
 export default router;
