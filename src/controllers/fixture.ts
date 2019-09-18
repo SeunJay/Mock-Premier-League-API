@@ -41,3 +41,45 @@ export const viewCompletedFixtures = async (_req: Request, res: Response) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const addFixture = async (req: Request, res: Response) => {
+  const { error } = validateFixture(req.body);
+  if (error) return res.status(401).send({ error: error.details[0].message });
+
+  const {
+    homeTeam,
+    awayTeam,
+    homeScore,
+    awayScore,
+    time,
+    stadium,
+    played,
+  } = req.body;
+
+  const home = await Team.findById(homeTeam);
+  if (!home)
+    return res
+      .status(400)
+      .json({ success: true, message: 'Team does not exist' });
+
+  const away = await Team.findById(awayTeam);
+  if (!away)
+    return res
+      .status(400)
+      .json({ success: true, message: 'Team does not exist' });
+
+  try {
+    const newFixture = await new Fixture({
+      homeTeam,
+      awayTeam,
+      homeScore,
+      awayScore,
+      time,
+      stadium,
+      played,
+    }).save();
+    return res.status(200).json({ success: true, data: newFixture });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
