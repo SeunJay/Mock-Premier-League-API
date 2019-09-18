@@ -2,6 +2,7 @@ import createError from 'http-errors';
 import express from 'express';
 //import path from 'path';
 import mongoose from 'mongoose';
+import seedDb from './db/index';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import dotenv from 'dotenv';
@@ -15,19 +16,24 @@ dotenv.config();
 
 const app = express();
 
-//const DB = <any>process.env.NODE_ENV === "test" ? process.env.TEST : process.env.PROD;
+const DB =
+  <any>process.env.NODE_ENV === 'test' ? process.env.TEST : process.env.PROD;
 
-// mongoose.connect(<any>DB, {
-//   useNewUrlParser: true,
-//   useFindAndModify: false,
-//   useUnifiedTopology: true
-// }).then(async () => {
-//   process.env.NODE_ENV !== "test" && (await seedDb());
-//   console.log("connected to mongodb...");
-// }).catch(err => {
-//   console.log({ error: err.message });
-//   process.exit(1);
-// });
+mongoose
+  .connect(<any>DB, {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  })
+  .then(async () => {
+    process.env.NODE_ENV !== 'test' && (await seedDb());
+    console.log('connected to mongodb...');
+  })
+  .catch(err => {
+    console.log({ error: err.message });
+
+    process.exit(1);
+  });
 
 app.use(cors());
 app.use(helmet());
@@ -65,6 +71,7 @@ app.use(function(
 console.log(process.env.JWT_PRIVATE_KEY);
 console.log(process.env.TEST);
 console.log(process.env.NODE_ENV);
+console.log(process.env.PORT);
 
 // const port = process.env.PORT || 3000;
 // app.listen(port, () => {
