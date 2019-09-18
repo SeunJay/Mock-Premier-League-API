@@ -63,13 +63,13 @@ export const addFixture = async (req: Request, res: Response) => {
   if (!home)
     return res
       .status(400)
-      .json({ success: true, message: 'Team does not exist' });
+      .json({ success: false, message: 'Team does not exist' });
 
   const away = await Team.findById(awayTeam);
   if (!away)
     return res
       .status(400)
-      .json({ success: true, message: 'Team does not exist' });
+      .json({ success: false, message: 'Team does not exist' });
 
   try {
     const newFixture = await new Fixture({
