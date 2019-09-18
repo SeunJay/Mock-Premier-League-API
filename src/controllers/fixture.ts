@@ -83,3 +83,46 @@ export const addFixture = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const editFixture = async (req: Request, res: Response) => {
+  const { error } = validateUpdateFixture(req.body);
+
+  if (error) return res.status(401).send({ error: error.details[0].message });
+
+  const { homeScore, awayScore, played } = req.body;
+
+  try {
+    const { homeTeam, awayTeam, time, stadium, _id } = await Fixture.findById({
+      _id: req.params.id,
+    });
+    const updateFixture = await Fixture.findByIdAndUpdate(
+      { _id: req.params.id },
+      {
+        homeTeam,
+        awayTeam,
+        time,
+        stadium,
+        homeScore,
+        awayScore,
+        played,
+      },
+    );
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const removeFixture = async (req: Request, res: Response) => {
+  try {
+    await Fixture.findByIdAndDelete({
+      _id: req.params.id,
+    });
+    res.status(200).json({
+      data: {
+        message: `Fixture deleted successfully`,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
