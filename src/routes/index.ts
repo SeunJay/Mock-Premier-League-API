@@ -1,9 +1,11 @@
 import { Router } from 'express';
+import userRoutes from './users';
+import teamRoutes from './teams';
+//import teamRoutes from './teams';
+
 const router = Router();
 
-/* GET home page. */
-router.get('/', function(_req, res, _next) {
-  res.render('index', { title: 'Express' });
-});
+router.use('/users', userRoutes);
+router.use('/teams', teamRoutes);
 
 export default router;
