@@ -44,7 +44,10 @@ export const viewCompletedFixtures = async (_req: Request, res: Response) => {
 
 export const addFixture = async (req: Request, res: Response) => {
   const { error } = validateFixture(req.body);
-  if (error) return res.status(401).send({ error: error.details[0].message });
+  if (error)
+    return res
+      .status(401)
+      .send({ error: error.details[0].message.replace(/\"/g, '') });
 
   const {
     homeTeam,
