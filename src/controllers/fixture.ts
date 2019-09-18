@@ -91,7 +91,8 @@ export const addFixture = async (req: Request, res: Response) => {
 export const editFixture = async (req: Request, res: Response) => {
   const { error } = validateUpdateFixture(req.body);
 
-  if (error) return res.status(400).json(error.details[0].message);
+  if (error)
+    return res.status(400).json(error.details[0].message.replace(/\"/g, ''));
 
   const { homeScore, awayScore, played } = req.body;
   try {
@@ -151,7 +152,7 @@ export const editFixture = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    res.status(400).json(`update failed :()`);
+    return res.status(400).json({ error: error.message });
   }
 };
 
