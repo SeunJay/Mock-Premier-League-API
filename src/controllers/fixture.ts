@@ -84,31 +84,71 @@ export const addFixture = async (req: Request, res: Response) => {
   }
 };
 
+//@ts-ignore
 export const editFixture = async (req: Request, res: Response) => {
   const { error } = validateUpdateFixture(req.body);
 
-  if (error) return res.status(401).send({ error: error.details[0].message });
+  if (error) return res.status(400).json(error.details[0].message);
 
   const { homeScore, awayScore, played } = req.body;
-
   try {
-    const { homeTeam, awayTeam, time, stadium, _id } = await Fixture.findById({
-      _id: req.params.id,
-    });
-    const updateFixture = await Fixture.findByIdAndUpdate(
-      { _id: req.params.id },
-      {
-        homeTeam,
-        awayTeam,
-        time,
-        stadium,
-        homeScore,
-        awayScore,
-        played,
-      },
+    const { homeTeam, awayTeam, time, stadium, _id } = <any>(
+      await Fixture.findById({
+        _id: req.params.id,
+      })
     );
+    const updateFixture = await Fixture.findByIdAndUpdate(_id, {
+      homeTeam,
+      awayTeam,
+      time,
+      stadium,
+      homeScore,
+      awayScore,
+      played,
+    });
+    if (!updateFixture) {
+      return 'Fixture does not exist';
+    }
+    await updateFixture.save();
+
+    const home = await Team.findById(homeTeam);
+    const away = await Team.findById(awayTeam);
+
+    if (!home) {
+      return;
+    }
+    if (!away) {
+      return;
+    }
+
+    // update the wins and losses if played is true
+    if (played) {
+      if (homeScore > awayScore) {
+        home.wins += 1;
+        away.losses += 1;
+        home.goals += homeScore;
+        away.goals += awayScore;
+      } else if (homeScore < awayScore) {
+        home.losses += 1;
+        away.wins += 1;
+        away.goals += awayScore;
+        home.goals += homeScore;
+      } else {
+        away.goals += awayScore;
+        home.goals += homeScore;
+      }
+
+      await home.save();
+      await away.save();
+    }
+
+    res.status(200).json({
+      data: {
+        message: `Fixture ${_id} updated successfully`,
+      },
+    });
   } catch (error) {
-    return res.status(400).json({ error: error.message });
+    res.status(400).json(`update failed :()`);
   }
 };
 
