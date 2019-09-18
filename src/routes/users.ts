@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import { login } from '../controllers/login';
+
 const router = Router();
 
-/* GET users listing. */
-router.get('/', function(_req, res, _next) {
-  res.send('respond with a resource');
-});
+router.post('/login', login);
 
 export default router;
