@@ -2,7 +2,7 @@ import { validateTeam } from '../validators/validateTeam';
 import { Request, Response } from 'express';
 import { Team } from '../models/Team';
 
-export const viewTeam = async (_req: Request, res: Response) => {
+export const viewTeams = async (_req: Request, res: Response) => {
   try {
     const teams = await Team.find({ isDeleted: false });
     return res.status(200).json({ success: true, data: teams });
