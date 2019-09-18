@@ -12,8 +12,12 @@ export const viewTeams = async (_req: Request, res: Response) => {
 };
 
 export const addTeam = async (req: Request, res: Response) => {
+  console.log(req.body);
   const { error } = validateTeam(req.body);
-  if (error) return res.status(401).send({ error: error.details[0].message });
+  if (error)
+    return res
+      .status(401)
+      .send({ error: error.details[0].message.replace(/\"/g, '') });
 
   try {
     const {
