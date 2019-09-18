@@ -10,15 +10,16 @@ export const login = async (req: Request, res: Response) => {
     if (!user)
       return res
         .status(400)
-        .send({ data: { message: 'Invalid Credentials!' } });
+        .json({ success: false, message: 'Invalid Credentials!' });
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
       return res
         .status(400)
-        .send({ data: { message: 'Invalid Credentials!' } });
+        .json({ success: false, message: 'Invalid Credentials!' });
 
     const token = user.getToken();
-    res.status(200).send({
+    return res.status(200).send({
+      success: true,
       data: token,
     });
   } catch (error) {
