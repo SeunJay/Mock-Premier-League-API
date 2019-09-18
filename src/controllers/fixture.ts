@@ -29,3 +29,15 @@ export const viewPendingFixtures = async (_req: Request, res: Response) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const viewCompletedFixtures = async (_req: Request, res: Response) => {
+  try {
+    const completedFixtures = await Fixture.find({ played: true }).populate(
+      'homeTeam awayTeam',
+      'name coach -_id',
+    );
+    return res.status(200).json({ success: true, data: completedFixtures });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
