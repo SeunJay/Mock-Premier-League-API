@@ -6,7 +6,10 @@ import { User } from '../models/User';
 //@ts-ignore
 export const signup = async (req: Request, res: Response) => {
   const { error } = validateUser(req.body);
-  if (error) return res.status(401).send({ error: error.details[0].message });
+  if (error)
+    return res
+      .status(401)
+      .send({ error: error.details[0].message.replace(/\"/g, '') });
 
   try {
     const { email } = req.body;
@@ -21,7 +24,8 @@ export const signup = async (req: Request, res: Response) => {
     user.password = await bcrypt.hash(user.password, salt);
 
     const token = user.getToken();
-    return res.status(200).json({ success: true, data: token });
+    const newUser = await user.save();
+    return res.status(200).json({ success: true, data: token, user: newUser });
   } catch (error) {
     const { message } = error;
     return res.status(400).send({
