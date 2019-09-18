@@ -1,16 +1,13 @@
 import createError from 'http-errors';
 import express from 'express';
-//import path from 'path';
 import mongoose from 'mongoose';
+import apiRoutes from './routes';
+import dotenv from 'dotenv';
 import seedDb from './db/index';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
-
-import indexRouter from './routes/index';
-import usersRouter from './routes/users';
 
 dotenv.config();
 
@@ -22,6 +19,7 @@ const DB =
 mongoose
   .connect(<any>DB, {
     useNewUrlParser: true,
+    useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true,
   })
@@ -42,10 +40,8 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/v1', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(_req, _res, next) {
@@ -73,9 +69,9 @@ console.log(process.env.TEST);
 console.log(process.env.NODE_ENV);
 console.log(process.env.PORT);
 
-// const port = process.env.PORT || 3000;
-// app.listen(port, () => {
-//   console.log(`App running on port ${port}...`);
-// });
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`App running on port ${port}...`);
+});
 
 module.exports = app;
