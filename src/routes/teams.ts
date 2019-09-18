@@ -10,3 +10,5 @@ router
   .post('/', [auth, admin], addTeam)
   .put('/:id', [auth, admin], editTeam)
   .delete('/:id', removeTeam);
+
+export default router;
