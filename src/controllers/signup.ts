@@ -12,7 +12,7 @@ export const signup = async (req: Request, res: Response) => {
       .send({ error: error.details[0].message.replace(/\"/g, '') });
 
   try {
-    const { email } = req.body;
+    const { email, name } = req.body;
     let user = await User.findOne({ email });
     if (user)
       return res
