@@ -23,8 +23,12 @@ export const signup = async (req: Request, res: Response) => {
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt);
 
+    const message = { name, email };
     const token = user.getToken();
     const newUser = await user.save();
+
+    //@ts-ignore
+    req.session[newUser._id] = { token, message };
     return res.status(200).json({ success: true, data: token, user: newUser });
   } catch (error) {
     const { message } = error;
