@@ -1,5 +1,8 @@
 import createError from 'http-errors';
 import express from 'express';
+import redis from 'redis';
+import session from 'express-session';
+import connectRedis from 'connect-redis';
 import mongoose from 'mongoose';
 import apiRoutes from './routes';
 import dotenv from 'dotenv';
@@ -10,6 +13,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 
 dotenv.config();
+
+const redisStore = connectRedis(session);
+//const client = redis.createClient(process.env)
 
 const app = express();
 
