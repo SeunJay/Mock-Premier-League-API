@@ -79,3 +79,32 @@ export const removeTeam = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const searchTeam = async (req: Request, res: Response) => {
+  const query = req.query;
+  console.log(query);
+
+  try {
+    const key = Object.keys(query)[0];
+    const value = Object.values(query)[0];
+
+    if (key === 'founded' || key === 'stadium_capacity')
+      return res.status(400).json({
+        success: false,
+        message: 'please you cannot search by founded or stadiumCapacity',
+      });
+
+    const team = await Team.find({
+      [key]: { $regex: new RegExp(`${value}`), $options: 'i' },
+      isDeleted: false,
+    });
+
+    if (!team.length)
+      return res
+        .status(400)
+        .json({ success: false, message: 'No match found' });
+    return res.status(200).json({ success: true, data: team });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
