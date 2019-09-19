@@ -170,3 +170,33 @@ export const removeFixture = async (req: Request, res: Response) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const searchFixture = async (req: Request, res: Response) => {
+  const query = req.query;
+  console.log(query);
+
+  try {
+    const key = Object.keys(query)[0];
+    const value = Object.values(query)[0];
+
+    if (key !== 'played' && key !== 'time' && key !== 'stadium')
+      return res.status(400).json({
+        success: false,
+        message:
+          'please you can only search by played status, time, and stadium',
+      });
+
+    const fixtures = await Fixture.find({
+      [key]: { $regex: new RegExp(`${value}`), $options: 'i' },
+      played: false,
+    });
+
+    if (!fixtures.length)
+      return res
+        .status(400)
+        .json({ success: false, message: 'No match found' });
+    return res.status(200).json({ success: true, data: fixtures });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
