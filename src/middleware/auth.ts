@@ -23,13 +23,26 @@ async function auth(req: Request, res: Response, next: NextFunction) {
 
     const decoded: any = jwt.verify(token, <any>process.env.JWT_PRIVATE_KEY);
     const currentUser = await User.findById(decoded._id);
+    console.log({ session: req.session });
 
-    if (!currentUser) {
-      return res.status(401).send({
-        data: {
-          message: 'The user belonging to this token does no longer exist.',
-        },
-      });
+    if (currentUser) {
+      //@ts-ignore
+      if (!req.session[currentUser._id]) {
+        //@ts-ignore
+        console.log(req.session[currentUser._id]);
+        return res.status(401).send({
+          data: {
+            message: 'Token expired. Please login...',
+          },
+        });
+      }
+
+      //@ts-ignore
+      if (decoded !== req.session[currentUser._id].token) {
+        return res.status(401).send({
+          data: { message: 'Invalid Token' },
+        });
+      }
     }
 
     //@ts-ignore
