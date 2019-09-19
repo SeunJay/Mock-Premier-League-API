@@ -2,19 +2,19 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../app';
 import { User } from '../models/User';
-// import { Team } from '../models/Team';
-// import auth from '../middleware/auth';
-// import jwt from 'jsonwebtoken';
-// import { Request, Response, NextFunction } from 'express';
+//import { Team } from '../models/Team';
+import auth from '../middleware/auth';
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
 import seed from '../db';
 
-//let token: string;
+let token: string;
 //let adminToken: string;
-// let teamA: any;
-// let teamB: any;
+//let teamA: any;
+//let teamB: any;
 // let fixturesId: string;
 // let fixtureLink: string;
-// let session: object;
+let session: object;
 
 beforeAll(async () => {
   await User.deleteMany({});
@@ -27,8 +27,8 @@ beforeAll(async () => {
       password: 'test1234',
     });
 
-  let token = user.body.data.token;
-  token;
+  token = user.body.data;
+  console.log(token);
   await seed();
 
   // teamA = await Team.findOne({ name: 'Brimingham City' });
@@ -153,9 +153,92 @@ describe('Tests for login in a user', () => {
         password: 'test1234',
       })
       .expect(res => {
-        // let adminToken: string;
         //adminToken = res.body.data.token;
         expect(res.body.success).toBe(true);
+      });
+  });
+});
+
+jest.mock('../middleware/auth');
+const mockedAuth = auth as jest.Mocked<any>;
+
+mockedAuth.mockImplementation(
+  //@ts-ignore
+  async (req: Request, res: Response, next: NextFunction) => {
+    //supertest sees req.session as undefined so had to mock it
+
+    //session store
+    session = {};
+    let token;
+    try {
+      if (
+        req.headers.authorization &&
+        req.headers.authorization.startsWith('Bearer')
+      ) {
+        token = req.headers.authorization.split(' ')[1];
+      }
+
+      if (!token) {
+        return res.status(401).send({
+          data: {
+            message: 'You are not logged in! Please log in to get access.',
+          },
+        });
+      }
+
+      const decoded: any = jwt.verify(token, <any>process.env.JWT_PRIVATE_KEY);
+
+      //@ts-ignore
+      session[decoded._id] = { token: token };
+
+      if (decoded) {
+        //@ts-ignore
+        if (!session[decoded._id]) {
+          return res.status(401).send({
+            data: { message: 'Session over, Pls login...' },
+          });
+        }
+
+        //@ts-ignore
+        if (token !== session[decoded._id].token) {
+          return res.status(401).send({
+            data: { message: 'Invalid Token' },
+          });
+        }
+
+        //@ts-ignore
+        req['checkUser'] = decoded;
+        next();
+      } else {
+        res.status(401).send({ data: { message: 'user does not exist' } });
+      }
+    } catch (error) {
+      return res.status(400).send({ data: { error } });
+    }
+  },
+);
+
+describe('Tests for team routes', () => {
+  it('Users should view teams', () => {
+    return request(app)
+      .get(`/api/v1/teams`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.data[0]).toHaveProperty('wins');
+        expect(res.body.data[0]).toHaveProperty('losses');
+        expect(res.body.data[0]).toHaveProperty('name');
+        expect(res.body.data[0]).toHaveProperty('email');
+      });
+  });
+});
+
+describe('Tests for fixture routes', () => {
+  it('UnAuthenticated users should not see fixtures', () => {
+    return request(app)
+      .get('/api/v1/fixtures')
+      .set('Authorization', `Bearer ${'aaa'}`)
+      .expect(res => {
+        expect(res.body.data.error.message).toBe('jwt malformed');
       });
   });
 });

@@ -6,7 +6,7 @@ import { User } from '../models/User';
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
-    req.session!.email = password;
+    // req.session!.email = password;
     const user = await User.findOne({ email });
     if (!user)
       return res
@@ -19,6 +19,10 @@ export const login = async (req: Request, res: Response) => {
         .json({ success: false, message: 'Invalid Credentials!' });
 
     const token = user.getToken();
+    //@ts-ignore
+    req.session[user._id] = {
+      token,
+    };
     return res.status(200).send({
       success: true,
       data: token,

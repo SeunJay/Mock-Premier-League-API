@@ -4,6 +4,8 @@ import { User } from '../models/User';
 
 //@ts-ignore
 async function auth(req: Request, res: Response, next: NextFunction) {
+  console.log('Hkk');
+
   let token;
   try {
     if (
@@ -23,6 +25,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
 
     const decoded: any = jwt.verify(token, <any>process.env.JWT_PRIVATE_KEY);
     const currentUser = await User.findById(decoded._id);
+    //console.log(decoded, req.session![currentUser!._id]);
 
     if (currentUser) {
       //@ts-ignore
@@ -37,7 +40,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
       }
 
       //@ts-ignore
-      if (decoded !== req.session[currentUser._id].token) {
+      if (token !== req.session[currentUser._id].token) {
         return res.status(401).send({
           data: { message: 'Invalid Token' },
         });
