@@ -70,7 +70,7 @@ describe('Tests for signing up a user', () => {
 });
 
 describe('Tests for login in a user', () => {
-  it('a user should be able to login', () => {
+  it('a regular user should be able to login', () => {
     return request(app)
       .post('/api/v1/users/login')
       .send({
@@ -103,6 +103,18 @@ describe('Tests for login in a user', () => {
       })
       .expect(res => {
         expect(res.body.message).toBe('Invalid Credentials!');
+      });
+  });
+
+  it('an admin user should be able to login', () => {
+    return request(app)
+      .post('/api/v1/users/login')
+      .send({
+        email: 'seunjay@gmail.com',
+        password: 'test1234',
+      })
+      .expect(res => {
+        expect(res.body.success).toBe(true);
       });
   });
 });
