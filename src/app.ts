@@ -20,7 +20,7 @@ const client = redis.createClient();
 const app = express();
 
 const DB =
-  <any>process.env.NODE_ENV === 'test' ? process.env.TEST : process.env.PROD;
+  <any>process.env.NODE_ENV === 'test' ? process.env.DEV : process.env.PROD;
 
 mongoose
   .connect(<any>DB, {
@@ -84,11 +84,6 @@ app.use(function(
   res.status(err.status || 500);
   res.render('error');
 });
-
-console.log(process.env.JWT_PRIVATE_KEY);
-console.log(process.env.TEST);
-console.log(process.env.NODE_ENV);
-console.log(process.env.PORT);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
