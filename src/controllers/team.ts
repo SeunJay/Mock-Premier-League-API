@@ -82,7 +82,6 @@ export const removeTeam = async (req: Request, res: Response) => {
 
 export const searchTeam = async (req: Request, res: Response) => {
   const query = req.query;
-  console.log(query);
 
   try {
     const key = Object.keys(query)[0];

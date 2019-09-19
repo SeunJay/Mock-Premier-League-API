@@ -173,7 +173,6 @@ export const removeFixture = async (req: Request, res: Response) => {
 
 export const searchFixture = async (req: Request, res: Response) => {
   const query = req.query;
-  console.log(query);
 
   try {
     const key = Object.keys(query)[0];
