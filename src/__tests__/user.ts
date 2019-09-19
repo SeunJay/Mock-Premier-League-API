@@ -55,6 +55,45 @@ describe('Tests for signing up a user', () => {
       });
   });
 
+  it('should return an error if name field is empty', () => {
+    return request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        name: '',
+        email: 'angel@gmail.com',
+        password: 'test1234',
+      })
+      .expect(res => {
+        expect(res.body.error).toBe('name is not allowed to be empty');
+      });
+  });
+
+  it('should return an error if email field is empty', () => {
+    return request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        name: 'Angel',
+        email: '',
+        password: 'test1234',
+      })
+      .expect(res => {
+        expect(res.body.error).toBe('email is not allowed to be empty');
+      });
+  });
+
+  it('should return an error if password field is empty', () => {
+    return request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        name: 'Angel',
+        email: 'angel@gmail.com',
+        password: '',
+      })
+      .expect(res => {
+        expect(res.body.error).toBe('password is not allowed to be empty');
+      });
+  });
+
   it('should return an error if same user tries to sign up again', () => {
     return request(app)
       .post('/api/v1/users/signup')
