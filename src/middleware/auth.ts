@@ -23,7 +23,6 @@ async function auth(req: Request, res: Response, next: NextFunction) {
 
     const decoded: any = jwt.verify(token, <any>process.env.JWT_PRIVATE_KEY);
     const currentUser = await User.findById(decoded._id);
-    console.log({ session: req.session });
 
     if (currentUser) {
       //@ts-ignore
