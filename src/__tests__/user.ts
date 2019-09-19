@@ -9,7 +9,7 @@ import { User } from '../models/User';
 import seed from '../db';
 
 //let token: string;
-// let adminToken: string;
+//let adminToken: string;
 // let teamA: any;
 // let teamB: any;
 // let fixturesId: string;
@@ -153,6 +153,8 @@ describe('Tests for login in a user', () => {
         password: 'test1234',
       })
       .expect(res => {
+        // let adminToken: string;
+        //adminToken = res.body.data.token;
         expect(res.body.success).toBe(true);
       });
   });
