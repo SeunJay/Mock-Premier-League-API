@@ -68,3 +68,41 @@ describe('Tests for signing up a user', () => {
       });
   });
 });
+
+describe('Tests for login in a user', () => {
+  it('a user should be able to login', () => {
+    return request(app)
+      .post('/api/v1/users/login')
+      .send({
+        email: 'angel@gmail.com',
+        password: 'test1234',
+      })
+      .expect(res => {
+        expect(res.body.success).toBe(true);
+      });
+  });
+
+  it('should return an error if password is wrong', () => {
+    return request(app)
+      .post('/api/v1/users/login')
+      .send({
+        email: 'angel@gmail.com',
+        password: 'test12345',
+      })
+      .expect(res => {
+        expect(res.body.message).toBe('Invalid Credentials!');
+      });
+  });
+
+  it('should return an error if email is wrong', () => {
+    return request(app)
+      .post('/api/v1/users/login')
+      .send({
+        email: 'angel1@gmail.com',
+        password: 'test12345',
+      })
+      .expect(res => {
+        expect(res.body.message).toBe('Invalid Credentials!');
+      });
+  });
+});
