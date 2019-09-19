@@ -15,7 +15,7 @@ import cors from 'cors';
 dotenv.config();
 
 const redisStore = connectRedis(session);
-//const client = redis.createClient(process.env)
+const client = redis.createClient();
 
 const app = express();
 
@@ -41,6 +41,21 @@ mongoose
 
 app.use(cors());
 app.use(helmet());
+
+app.use(
+  session({
+    secret: <any>process.env.JWT_PRIVATE_KEY,
+    // create new redis store.
+    store: new redisStore({
+      host: 'localhost',
+      port: 6379,
+      client: client,
+      ttl: 1800,
+    }),
+    saveUninitialized: false,
+    resave: false,
+  }),
+);
 
 app.use(logger('dev'));
 app.use(express.json());
