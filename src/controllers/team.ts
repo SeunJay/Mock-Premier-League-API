@@ -44,7 +44,8 @@ export const addTeam = async (req: Request, res: Response) => {
       founded,
       stadium_name,
       stadium_capacity,
-    }).save();
+    });
+    await newTeam.save();
     return res.status(200).json({ success: true, data: newTeam });
   } catch (error) {
     return res.status(400).json({ error: error.message });
