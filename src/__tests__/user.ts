@@ -398,4 +398,24 @@ describe('Tests for fixture routes', () => {
         });
       });
   });
+
+  it('a regular user should not be able to create fixtures', () => {
+    return request(app)
+      .post('/api/v1/fixtures')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        homeTeam: teamA._id,
+        awayTeam: teamB._id,
+        time: '7:00pm',
+        homeScore: 0,
+        awayScore: 0,
+        stadium: 'boltonfield',
+        played: false,
+      })
+      .expect(res => {
+        expect(res.body.data.message).toBe(
+          'You do not have permission to perform this action',
+        );
+      });
+  });
 });
