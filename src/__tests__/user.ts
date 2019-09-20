@@ -352,4 +352,13 @@ describe('Tests for fixture routes', () => {
         expect(res.body.data).toHaveLength(12);
       });
   });
+
+  it('Authenticated users should see pending fixtures', () => {
+    return request(app)
+      .get('/api/v1/fixtures/pending')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.data).toHaveLength(5);
+      });
+  });
 });
