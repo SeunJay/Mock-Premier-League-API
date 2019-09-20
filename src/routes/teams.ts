@@ -13,7 +13,7 @@ const router = Router();
 
 router
   .get('/', auth, viewTeams)
-  .post('/', [auth, admin], addTeam)
+  .post('/', auth, admin, addTeam)
   .put('/:id', [auth, admin], editTeam)
   .delete('/:id', [auth, admin], removeTeam)
   .get('/search', searchTeam);
