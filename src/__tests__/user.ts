@@ -434,4 +434,13 @@ describe('Tests for fixture routes', () => {
         );
       });
   });
+
+  it('Admin should remove a fixture', () => {
+    return request(app)
+      .delete(`/api/v1/fixtures/${fixturesId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(res => {
+        expect(res.body.data.message).toBe(`Fixture deleted successfully`);
+      });
+  });
 });
