@@ -463,6 +463,18 @@ describe('Public routes', () => {
       });
   });
 
+  it('should return an error if search key is founded or stadium capacity', () => {
+    let key = 'England';
+    return request(app)
+      .get(`/api/v1/teams/search?founded=${key}`)
+      .expect(res => {
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe(
+          'please you cannot search by founded or stadium capacity',
+        );
+      });
+  });
+
   it('a user should be able to search for fixtures', () => {
     let key = 'fullhamfield';
     return request(app)
