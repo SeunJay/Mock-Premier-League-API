@@ -2,7 +2,7 @@ import request from 'supertest';
 import mongoose from 'mongoose';
 import app from '../app';
 import { User } from '../models/User';
-//import { Team } from '../models/Team';
+import { Team } from '../models/Team';
 // import auth from '../middleware/auth';
 // import jwt from 'jsonwebtoken';
 // import { Request, Response, NextFunction } from 'express';
@@ -10,7 +10,7 @@ import seed from '../db';
 
 let token: string;
 let adminToken: string;
-//let teamA: any;
+let teamA: any;
 //let teamB: any;
 // let fixturesId: string;
 // let fixtureLink: string;
@@ -31,7 +31,7 @@ beforeAll(async () => {
   token = user.body.data;
   //console.log(token, user );
 
-  // teamA = await Team.findOne({ name: 'Brimingham City' });
+  teamA = await Team.findOne({ name: 'Brimingham City' });
   // teamB = await Team.findOne({ name: 'Fulham' });
 });
 
@@ -272,6 +272,23 @@ describe('Tests for team routes', () => {
         losses: 0,
         goals: 8,
         stadium_capacity: '60000m',
+      })
+      .expect(res => {
+        expect(res.body.success).toBe(true);
+      });
+  });
+
+  it('an admin user should be able to edit a team', () => {
+    console.log(adminToken);
+    return request(app)
+      .put(`/api/v1/teams/${teamA._id}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'SeunJay FC',
+        email: 'forestgreen@email.com',
+        coach: 'Tob Jay',
+        country: 'England',
+        founded: 2000,
       })
       .expect(res => {
         expect(res.body.success).toBe(true);
