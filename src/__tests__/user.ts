@@ -277,16 +277,6 @@ describe('Tests for team routes', () => {
       });
   });
 
-  it('a user should be able to search for team', () => {
-    let key = 'England';
-    return request(app)
-      .get(`/api/v1/teams/search?country=${key}`)
-      .set('Authorization', `Bearer ${token}`)
-      .expect(res => {
-        expect(res.body.success).toBe(true);
-      });
-  });
-
   it('an admin user should be able to edit a team', () => {
     return request(app)
       .put(`/api/v1/teams/${teamA._id}`)
@@ -459,6 +449,26 @@ describe('Tests for fixture routes', () => {
         expect(res.body.data.message).toBe(
           'You do not have permission to perform this action',
         );
+      });
+  });
+});
+
+describe('Public routes', () => {
+  it('a user should be able to search for teams', () => {
+    let key = 'England';
+    return request(app)
+      .get(`/api/v1/teams/search?country=${key}`)
+      .expect(res => {
+        expect(res.body.success).toBe(true);
+      });
+  });
+
+  it('a user should be able to search for fixtures', () => {
+    let key = 'fullhamfield';
+    return request(app)
+      .get(`/api/v1/fixtures/search?stadium=${key}`)
+      .expect(res => {
+        expect(res.body.success).toBe(true);
       });
   });
 });
