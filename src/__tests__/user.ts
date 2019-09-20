@@ -343,4 +343,13 @@ describe('Tests for fixture routes', () => {
         expect(res.body.data.error.message).toBe('jwt malformed');
       });
   });
+
+  it('Authenticated users should see fixtures', () => {
+    return request(app)
+      .get('/api/v1/fixtures')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.data).toHaveLength(12);
+      });
+  });
 });
