@@ -418,4 +418,20 @@ describe('Tests for fixture routes', () => {
         );
       });
   });
+
+  it('Admin should update fixtures', () => {
+    return request(app)
+      .put(`/api/v1/fixtures/${fixturesId}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        homeScore: 4,
+        awayScore: 2,
+        played: true,
+      })
+      .expect(res => {
+        expect(res.body.data.message).toBe(
+          `Fixture ${fixturesId} updated successfully`,
+        );
+      });
+  });
 });
