@@ -294,6 +294,25 @@ describe('Tests for team routes', () => {
         expect(res.body.success).toBe(true);
       });
   });
+
+  it('an regular user should not be able to edit a team', () => {
+    console.log(adminToken);
+    return request(app)
+      .put(`/api/v1/teams/${teamA._id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'SeunJay FC',
+        email: 'forestgreen@email.com',
+        coach: 'Tob Jay',
+        country: 'England',
+        founded: 2000,
+      })
+      .expect(res => {
+        expect(res.body.data.message).toBe(
+          'You do not have permission to perform this action',
+        );
+      });
+  });
 });
 
 describe('Tests for fixture routes', () => {
