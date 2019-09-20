@@ -233,7 +233,6 @@ describe('Tests for team routes', () => {
   });
 
   it('a regular user should not be able to create a team', () => {
-    console.log(token, 'gere');
     return request(app)
       .post(`/api/v1/teams`)
       .set('Authorization', `Bearer ${token}`)
@@ -258,7 +257,6 @@ describe('Tests for team routes', () => {
   });
 
   it('an admin user should be able to create a team', () => {
-    console.log(adminToken);
     return request(app)
       .post(`/api/v1/teams`)
       .set('Authorization', `Bearer ${adminToken}`)
@@ -279,8 +277,17 @@ describe('Tests for team routes', () => {
       });
   });
 
+  it('a user should be able to search for team', () => {
+    let key = 'England';
+    return request(app)
+      .get(`/api/v1/teams/search?country=${key}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.success).toBe(true);
+      });
+  });
+
   it('an admin user should be able to edit a team', () => {
-    console.log(adminToken);
     return request(app)
       .put(`/api/v1/teams/${teamA._id}`)
       .set('Authorization', `Bearer ${adminToken}`)
