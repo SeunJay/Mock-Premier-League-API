@@ -91,7 +91,7 @@ export const searchTeam = async (req: Request, res: Response) => {
     if (key === 'founded' || key === 'stadium_capacity')
       return res.status(400).json({
         success: false,
-        message: 'please you cannot search by founded or stadiumCapacity',
+        message: 'please you cannot search by founded or stadium capacity',
       });
 
     const team = await Team.find({
