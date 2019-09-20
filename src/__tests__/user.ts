@@ -361,4 +361,13 @@ describe('Tests for fixture routes', () => {
         expect(res.body.data).toHaveLength(5);
       });
   });
+
+  it('Authenticated users should see completed fixtures', () => {
+    return request(app)
+      .get('/api/v1/fixtures/completed')
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.data).toHaveLength(7);
+      });
+  });
 });
