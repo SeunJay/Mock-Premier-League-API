@@ -443,4 +443,15 @@ describe('Tests for fixture routes', () => {
         expect(res.body.data.message).toBe(`Fixture deleted successfully`);
       });
   });
+
+  it('a regular user should not be able to remove a fixture', () => {
+    return request(app)
+      .delete(`/api/v1/fixtures/${fixturesId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.data.message).toBe(
+          'You do not have permission to perform this action',
+        );
+      });
+  });
 });
