@@ -1,4 +1,4 @@
-import createError from 'http-errors';
+// import createError from 'http-errors';
 import express from 'express';
 import redis from 'redis';
 import session from 'express-session';
@@ -65,24 +65,24 @@ app.use(cookieParser());
 app.use('/api/v1', apiRoutes);
 
 // catch 404 and forward to error handler
-app.use(function(_req, _res, next) {
-  next(createError(404));
-});
+// app.use(function(_req, _res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(
   err: any,
-  req: express.Request,
+  _req: express.Request,
   res: express.Response,
   _next: express.NextFunction,
 ) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json(err);
 });
 
 const port = process.env.PORT || 3000;
