@@ -11,8 +11,9 @@ import seed from '../db';
 let token: string;
 let adminToken: string;
 let teamA: any;
-//let teamB: any;
-// let fixturesId: string;
+let teamB: any;
+//@ts-ignore
+let fixturesId: string;
 // let fixtureLink: string;
 // let session: object;
 
@@ -32,7 +33,7 @@ beforeAll(async () => {
   //console.log(token, user );
 
   teamA = await Team.findOne({ name: 'Brimingham City' });
-  // teamB = await Team.findOne({ name: 'Fulham' });
+  teamB = await Team.findOne({ name: 'Fulham' });
 });
 
 afterAll(async () => {
@@ -368,6 +369,33 @@ describe('Tests for fixture routes', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(res => {
         expect(res.body.data).toHaveLength(7);
+      });
+  });
+
+  it('Admin should create fixtures', () => {
+    return request(app)
+      .post('/api/v1/fixtures')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        homeTeam: teamA._id,
+        awayTeam: teamB._id,
+        time: '7:00pm',
+        homeScore: 0,
+        awayScore: 0,
+        stadium: 'boltonfield',
+        played: false,
+      })
+      .expect(res => {
+        //assign fixtures properties
+        fixturesId = res.body.data._id;
+        //fixtureLink = res.body.data.message.link;
+
+        expect(res.body.data).toMatchObject({
+          homeScore: 0,
+          awayScore: 0,
+          stadium: 'boltonfield',
+          played: false,
+        });
       });
   });
 });
