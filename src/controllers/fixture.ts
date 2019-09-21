@@ -199,3 +199,24 @@ export const searchFixture = async (req: Request, res: Response) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const getFixture = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const fixture = await Fixture.findOne({
+      link: `http://localhost:${process.env.PORT}/api/v1/fixtures/${id}`,
+    })
+      .populate('homeTeam awayTeam', 'name coach -_id')
+      .select('-_id');
+    console.log(fixture);
+
+    if (!fixture)
+      return res
+        .status(400)
+        .json({ success: false, message: 'Link not available' });
+
+    return res.status(200).json({ success: true, fixture });
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
