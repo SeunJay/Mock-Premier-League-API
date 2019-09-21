@@ -330,6 +330,17 @@ describe('Tests for team routes', () => {
         expect(res.body.success).toBe(true);
       });
   });
+
+  it('an admin user should be able to remove a team', () => {
+    return request(app)
+      .delete(`/api/v1/teams/${teamA._id}wer`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .expect(res => {
+        console.log(res.body.success);
+
+        expect(res.body.success).toBe(false);
+      });
+  });
 });
 
 describe('Tests for fixture routes', () => {
