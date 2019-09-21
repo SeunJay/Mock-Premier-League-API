@@ -4,8 +4,6 @@ import { User } from '../models/User';
 
 //@ts-ignore
 async function auth(req: Request, res: Response, next: NextFunction) {
-  console.log('Hkk');
-
   let token;
   try {
     if (
@@ -14,6 +12,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
     ) {
       token = req.headers.authorization.split(' ')[1];
     }
+
     if (!token) {
       return res.status(401).send({
         data: {
