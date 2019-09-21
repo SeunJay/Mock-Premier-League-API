@@ -14,7 +14,7 @@ let teamA: any;
 let teamB: any;
 //@ts-ignore
 let fixturesId: string;
-// let fixtureLink: string;
+let fixtureLink: string;
 // let session: object;
 
 beforeAll(async () => {
@@ -331,16 +331,16 @@ describe('Tests for team routes', () => {
       });
   });
 
-  it('an admin user should be able to remove a team', () => {
-    return request(app)
-      .delete(`/api/v1/teams/${teamA._id}wer`)
-      .set('Authorization', `Bearer ${adminToken}`)
-      .expect(res => {
-        console.log(res.body.success);
+  // it('an admin user should be able to remove a team', () => {
+  //   return request(app)
+  //     .delete(`/api/v1/teams/${teamA._id}wer`)
+  //     .set('Authorization', `Bearer ${adminToken}`)
+  //     .expect(res => {
+  //       console.log(res.body.success);
 
-        expect(res.body.success).toBe(false);
-      });
-  });
+  //       expect(res.body.success).toBe(false);
+  //     });
+  // });
 });
 
 describe('Tests for fixture routes', () => {
@@ -396,12 +396,32 @@ describe('Tests for fixture routes', () => {
       .expect(res => {
         //assign fixtures properties
         fixturesId = res.body.data._id;
-        //fixtureLink = res.body.data.message.link;
+        fixtureLink = res.body.data.link;
 
         expect(res.body.data).toMatchObject({
           homeScore: 0,
           awayScore: 0,
           stadium: 'boltonfield',
+          played: false,
+        });
+      });
+  });
+
+  it('Users should see a fixtures by link', () => {
+    let link = fixtureLink.split('/');
+    let mainLink = link[link.length - 1];
+    return request(app)
+      .get(`/api/v1/fixtures/${mainLink}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.body.success).toBe(true);
+        expect(res.body.fixture).toMatchObject({
+          homeScore: 0,
+          awayScore: 0,
+          stadium: 'boltonfield',
+          homeTeam: { name: 'SeunJay FC', coach: 'Tob Jay' },
+          awayTeam: { name: 'Fulham', coach: 'Van gwart' },
+          time: '7:00pm',
           played: false,
         });
       });
@@ -417,7 +437,7 @@ describe('Tests for fixture routes', () => {
         time: '7:00pm',
         homeScore: 0,
         awayScore: 0,
-        stadium: 'boltonfield',
+        stadium: 'shellfield',
         played: false,
       })
       .expect(res => {
@@ -487,7 +507,7 @@ describe('Public routes', () => {
   });
 
   it('a user should be able to search for fixtures', () => {
-    let key = 'fullhamfield';
+    let key = 'shellfield';
     return request(app)
       .get(`/api/v1/fixtures/search?stadium=${key}`)
       .expect(res => {
