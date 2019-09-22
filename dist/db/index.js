@@ -61,7 +61,7 @@ const seedFixture = async () => {
         name: fixture.awayTeam,
       }).exec();
       const newFixtures = await new Fixture_1.Fixture(
-        Object.assign(Object.assign({}, fixture), {
+        Object.assign({}, fixture, {
           //@ts-ignore
           homeTeam: hometeam.id,
           //@ts-ignore

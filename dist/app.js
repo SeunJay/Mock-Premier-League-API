@@ -20,7 +20,7 @@ const helmet_1 = __importDefault(require('helmet'));
 const cors_1 = __importDefault(require('cors'));
 dotenv_1.default.config();
 const redisStore = connect_redis_1.default(express_session_1.default);
-const client = redis_1.default.createClient();
+const client = redis_1.default.createClient(process.env.REDIS_URL);
 const app = express_1.default();
 const DB = process.env.NODE_ENV === 'test' ? process.env.DEV : process.env.PROD;
 mongoose_1.default
@@ -36,7 +36,7 @@ mongoose_1.default
   })
   .catch(err => {
     console.log({ error: err.message });
-    process.exit(1);
+    process.exit(4);
   });
 app.use(cors_1.default());
 app.use(helmet_1.default());
