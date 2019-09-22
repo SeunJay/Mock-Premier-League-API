@@ -36,7 +36,7 @@ mongoose
   .catch(err => {
     console.log({ error: err.message });
 
-    process.exit(1);
+    process.exit(4);
   });
 
 app.use(cors());
