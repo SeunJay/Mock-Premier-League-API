@@ -32,6 +32,7 @@
     "objectid": "^3.2.1",
     "redis": "^2.8.0",
     "shortid": "^2.2.15",
+    "ts-mongoose": "0.0.19",
     "typescript": "^3.6.2"
   },
   "devDependencies": {
@@ -44,7 +45,7 @@
     "@types/http-errors": "^1.6.1",
     "@types/jest": "^24.0.18",
     "@types/jsonwebtoken": "^8.3.3",
-    "@types/mongoose": "^5.5.16",
+    "@types/mongoose": "^5.5.17",
     "@types/morgan": "^1.7.35",
     "@types/node": "^12.7.3",
     "@types/redis": "^2.8.13",
@@ -57,8 +58,7 @@
     "pretty-quick": "^1.11.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.0.2",
-    "ts-node": "^8.3.0",
-    "ts-mongoose": "0.0.19"
+    "ts-node": "^8.3.0"
   },
   "husky": {
     "hooks": {
