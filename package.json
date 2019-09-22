@@ -1,0 +1,68 @@
+{
+  "name": "mock-premier-league-api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "NODE_ENV=production ./dist/app.js",
+    "dev": "nodemon dist/app.js",
+    "test": "jest --runInBand --detectOpenHandles --forceExit --watch"
+  },
+  "dependencies": {
+    "@hapi/joi": "^16.0.1",
+    "@types/connect-redis": "0.0.11",
+    "@types/express-session": "^1.15.14",
+    "@types/joi": "^14.3.3",
+    "bcrypt": "^3.0.6",
+    "connect-redis": "^4.0.2",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.1",
+    "debug": "~2.6.9",
+    "dotenv": "^8.1.0",
+    "express": "~4.16.1",
+    "express-session": "^1.16.2",
+    "helmet": "^3.21.0",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.1",
+    "morgan": "~1.9.1",
+    "objectid": "^3.2.1",
+    "redis": "^2.8.0",
+    "shortid": "^2.2.15",
+    "typescript": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^6.1.1",
+    "@types/hapi__joi": "^15.0.3",
+    "@types/helmet": "^0.0.44",
+    "@types/http-errors": "^1.6.1",
+    "@types/jest": "^24.0.18",
+    "@types/jsonwebtoken": "^8.3.3",
+    "@types/mongoose": "^5.5.16",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^12.7.3",
+    "@types/redis": "^2.8.13",
+    "@types/shortid": "^0.0.29",
+    "@types/supertest": "^2.0.8",
+    "husky": "^3.0.4",
+    "jest": "^24.9.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "pretty-quick": "^1.11.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "ts-mongoose": "0.0.19"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
