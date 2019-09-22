@@ -15,7 +15,7 @@ import cors from 'cors';
 dotenv.config();
 
 const redisStore = connectRedis(session);
-const client = redis.createClient();
+const client = redis.createClient(<any>process.env.REDIS_URL);
 
 const app = express();
 
