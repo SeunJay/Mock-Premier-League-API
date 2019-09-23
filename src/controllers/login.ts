@@ -6,7 +6,6 @@ import { User } from '../models/User';
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
-    // req.session!.email = password;
     const user = await User.findOne({ email });
     if (!user)
       return res

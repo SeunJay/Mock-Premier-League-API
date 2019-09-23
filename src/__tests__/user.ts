@@ -3,9 +3,6 @@ import mongoose from 'mongoose';
 import app from '../app';
 import { User } from '../models/User';
 import { Team } from '../models/Team';
-// import auth from '../middleware/auth';
-// import jwt from 'jsonwebtoken';
-// import { Request, Response, NextFunction } from 'express';
 import seed from '../db';
 
 let token: string;
@@ -30,7 +27,6 @@ beforeAll(async () => {
     });
 
   token = user.body.data;
-  //console.log(token, user );
 
   teamA = await Team.findOne({ name: 'Brimingham City' });
   teamB = await Team.findOne({ name: 'Fulham' });
@@ -160,65 +156,6 @@ describe('Tests for login in a user', () => {
   });
 });
 
-// jest.mock('../middleware/auth');
-// const mockedAuth = auth as jest.Mocked<any>;
-
-// mockedAuth.mockImplementation(
-//   //@ts-ignore
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     //supertest sees req.session as undefined so had to mock it
-
-//     //session store
-//     session = {};
-//     let token;
-//     try {
-//       if (
-//         req.headers.authorization &&
-//         req.headers.authorization.startsWith('Bearer')
-//       ) {
-//         token = req.headers.authorization.split(' ')[1];
-//       }
-
-//       if (!token) {
-//         return res.status(401).send({
-//           data: {
-//             message: 'You are not logged in! Please log in to get access.',
-//           },
-//         });
-//       }
-
-//       const decoded: any = jwt.verify(token, <any>process.env.JWT_PRIVATE_KEY);
-
-//       //@ts-ignore
-//       session[decoded._id] = { token: token };
-
-//       if (decoded) {
-//         //@ts-ignore
-//         if (!session[decoded._id]) {
-//           return res.status(401).send({
-//             data: { message: 'Session over, Pls login...' },
-//           });
-//         }
-
-//         //@ts-ignore
-//         if (token !== session[decoded._id].token) {
-//           return res.status(401).send({
-//             data: { message: 'Invalid Token' },
-//           });
-//         }
-
-//         //@ts-ignore
-//         req['checkUser'] = decoded;
-//         next();
-//       } else {
-//         res.status(401).send({ data: { message: 'user does not exist' } });
-//       }
-//     } catch (error) {
-//       return res.status(400).send({ data: { error } });
-//     }
-//   },
-// );
-
 describe('Tests for team routes', () => {
   it('Users should view teams', () => {
     return request(app)
@@ -330,17 +267,6 @@ describe('Tests for team routes', () => {
         expect(res.body.success).toBe(true);
       });
   });
-
-  // it('an admin user should be able to remove a team', () => {
-  //   return request(app)
-  //     .delete(`/api/v1/teams/${teamA._id}wer`)
-  //     .set('Authorization', `Bearer ${adminToken}`)
-  //     .expect(res => {
-  //       console.log(res.body.success);
-
-  //       expect(res.body.success).toBe(false);
-  //     });
-  // });
 });
 
 describe('Tests for fixture routes', () => {
